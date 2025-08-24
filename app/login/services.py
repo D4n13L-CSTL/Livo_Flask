@@ -1,4 +1,6 @@
 import bcrypt
+from flask import make_response, jsonify
+from flask_jwt_extended import create_access_token
 
 
 class LoginAuth:
@@ -12,6 +14,15 @@ class LoginAuth:
 
         stored_password = user[0]['password'].encode('utf-8')
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
-            return {"Auth": True}, 200
+            access_token = create_access_token(identity=username)
+            resp = make_response(jsonify({"Auth": True}), 200)
+            resp.set_cookie(
+                "access_token_cookie",
+                access_token,
+                httponly=True,
+                secure=False,   # True en producción con HTTPS
+                samesite="Strict"
+            )
+            return resp
         else:
             return {"Auth": "Contraseña Incorrecta"}, 401

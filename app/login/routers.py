@@ -3,8 +3,8 @@ from flask_restx import Resource
 from .documentation import *
 from . import  login_iniar
 
-login_bp = Blueprint('login', __name__, url_prefix='/login')
 
+login_bp = Blueprint('login', __name__, url_prefix='/login')
 
 @api.route('/v1/api')
 class Login(Resource):

@@ -1,0 +1,22 @@
+from flask import Blueprint
+from flask_restx import fields, Namespace, Resource
+from . import auth_user
+
+bp = Blueprint('auth', __name__, url_prefix='/auth')
+
+api = Namespace('Gestion de Usuario', description='Gestion de Usuario', path='/auth')
+
+@api.route('/v1/api')
+class Auth(Resource):
+    def post(self):
+        try:        
+            data = api.payload
+            username = data['username']
+            email = data['email']
+            password  = data['password']
+            usuario = auth_user.user_create( username, email, password )
+            return {'Id': usuario}
+        except ValueError as e:
+            return {'Error':str(e)} , 400
+        except Exception as e:
+            return {'Error':str(e)} , 500

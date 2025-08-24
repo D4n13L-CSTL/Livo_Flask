@@ -1,4 +1,5 @@
 from modelClass.BaseDAO import WriteDAO, BaseDAO
+import json
 
 class Clubes(WriteDAO):
 
@@ -15,3 +16,20 @@ class Clubes(WriteDAO):
                 INSERT INTO clubes_usuarios (id_usuario, id_club, id_rol) VALUES (%s,%s,%s)
             """
         return self.execute(query, (id_usuario, id_club, id_rol))
+
+
+    def crear_formulario_de_inscripcion(self, formulario: dict, id_club: int):
+        query = """
+            insert into formulario_registro_atleta (formulario, id_club) VALUES (%s,%s)
+        """
+        return self.execute(query, (json.dumps(formulario), id_club))
+    
+
+class VerFormularios(BaseDAO):
+
+    def formulario_club(self, id_club):
+        query = """
+                select formulario from formulario_registro_atleta where id_club = %s
+                """
+    
+        return self.fetch_all(query,(id_club,))

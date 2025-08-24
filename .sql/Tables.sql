@@ -46,6 +46,14 @@ CREATE TABLE club_atleta (
   "fecha_registro" date
 );
 
+CREATE TABLE formulario_registro_atleta (
+  "id" serial PRIMARY KEY,
+  "formulario" jsonb,
+  "id_club" int
+);
+
+
+
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id");
@@ -57,3 +65,6 @@ ALTER TABLE "atletas" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id"
 ALTER TABLE "club_atleta" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "club_atleta" ADD FOREIGN KEY ("id_atleta") REFERENCES "atletas" ("id");
+
+ALTER TABLE "formulario_registro_atleta" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
+

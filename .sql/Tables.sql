@@ -2,7 +2,8 @@ CREATE TABLE usuarios (
   "id" serial PRIMARY KEY,
   "username" text,
   "email" text UNIQUE,
-  "password" text
+  "password" text,
+  "tipo_de_user_id" int
 );
 
 CREATE TABLE clubes (
@@ -62,6 +63,11 @@ CREATE TABLE respuestas_formulario_atleta (
 
 
 
+CREATE TABLE tipo_de_user(
+  id serial PRIMARY KEY,
+  nombre text
+)
+
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id");
@@ -75,4 +81,6 @@ ALTER TABLE "club_atleta" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id")
 ALTER TABLE "club_atleta" ADD FOREIGN KEY ("id_atleta") REFERENCES "atletas" ("id");
 
 ALTER TABLE "formulario_registro_atleta" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
+
+ALTER TABLE "usuarios" ADD FOREIGN KEY ("tipo_de_user_id") REFERENCES "tipo_de_user" ("id");
 

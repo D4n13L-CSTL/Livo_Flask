@@ -54,3 +54,12 @@ class InvitacionService:
 
         # Retornar link
         return f"http://10.100.39.23:5041/club/v1/api/registro_atleta?token={token}"
+    
+
+class LogicAtletas(ClubBase):
+    def __init__(self, clubs):
+        super().__init__(clubs)
+        
+    def obtener_lista_atletas(self):
+        id_club = request.cookies.get("id_club_cookie")
+        return self.club.lista_atletas(id_club)

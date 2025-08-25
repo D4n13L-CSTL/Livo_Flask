@@ -23,7 +23,7 @@ def create_app():
 
     jwt = JWTManager(app)
 
-    CORS(app, supports_credentials=True, origins=["*"])
+    CORS(app, supports_credentials=True, origins=["https://livo.loca.lt" , "http://10.100.39.23:3000"])
     api = Api(app, 
               doc='/docs',
               title='Livo Flask')

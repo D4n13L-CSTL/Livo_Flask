@@ -1,7 +1,7 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restx import Resource
 from .documentation import * 
-from . import gestion_club, formularios_registrados, link_generate_inscripcion
+from . import gestion_club, formularios_registrados, link_generate_inscripcion, atletas_logic
 from ..auth import auth_user
 from flask_jwt_extended import decode_token
 
@@ -117,4 +117,12 @@ class obtener_formulario(Resource):
         except Exception as e:
             return {"error": str(e)}, 400
         
-    
+
+
+@api.route('/v1/api/atletas')
+class ObtenerAtletas(Resource):
+    def get(self):
+        try:
+            return {"atletas": atletas_logic.obtener_lista_atletas()}, 200
+        except Exception as e:
+            return {"Error": str(e)}, 500

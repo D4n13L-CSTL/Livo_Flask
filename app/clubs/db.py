@@ -41,5 +41,15 @@ class VerFormularios(BaseDAO):
             WHERE id_club = %s AND id = %s
         """
         return self.fetch_all(query,  (id_club, id_formulario))
-    
-
+  
+  
+class ListaAtletas(BaseDAO):
+    def lista_atletas(self, id_club):
+        query = """
+        SELECT atletas.id as id_atleta, atletas.nombres as nombre_atleta, atletas.email as correo
+        FROM ATLETAS
+        INNER JOIN CLUB_ATLETA ON ATLETAS.id = CLUB_ATLETA.id_atleta
+        JOIN CLUBES on CLUB_ATLETA.id_club = CLUBES.id
+        where CLUBES.id = %s
+        """
+        return self.fetch_all(query, (id_club,))

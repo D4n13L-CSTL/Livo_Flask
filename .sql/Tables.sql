@@ -52,6 +52,14 @@ CREATE TABLE formulario_registro_atleta (
   "id_club" int
 );
 
+CREATE TABLE respuestas_formulario_atleta (
+    id serial PRIMARY KEY,
+    id_atleta int NOT NULL REFERENCES atletas(id),
+    id_formulario int NOT NULL REFERENCES formulario_registro_atleta(id),
+    respuestas jsonb NOT NULL,
+    fecha_respuesta timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
 
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");

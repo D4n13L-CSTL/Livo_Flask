@@ -1,3 +1,5 @@
+from flask_jwt_extended import create_access_token
+from datetime import timedelta, datetime
 
 class ClubBase:
     def __init__(self, clubs):
@@ -24,3 +26,29 @@ class ObtenerFormulario(ClubBase):
 
     def ver_formularios(self,id_club):
         return self.club.formulario_club(id_club)
+
+    def formulario_for_id(self,id_club, id_formulario):
+
+        return self.club.formulario_x_id_and_id_club(id_club, id_formulario)
+
+
+class InvitacionService:
+    def __init__(self, formulario_dao: ObtenerFormulario):
+        self.formulario_dao = formulario_dao
+
+    def generar_link(self, id_club: int, id_formulario: int):
+        # Validar que el formulario existe en ese club
+        formulario = self.formulario_dao.formulario_for_id(id_club, id_formulario)
+        if not formulario:
+            raise ValueError("El formulario no existe o no pertenece al club")
+
+        # Crear token con claims
+        claims = {"id_club": id_club, "id_formulario": id_formulario}
+        token = create_access_token(
+            identity="invitacion",
+            additional_claims=claims,
+            expires_delta=timedelta(days=7)
+        )
+
+        # Retornar link
+        return f"http://192.168.2.112:5041/club/v1/api/registro_atleta?token={token}"

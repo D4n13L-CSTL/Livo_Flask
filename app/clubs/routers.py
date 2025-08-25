@@ -1,8 +1,9 @@
-from flask import Blueprint, make_response, jsonify
+from flask import Blueprint, make_response, jsonify, request
 from flask_restx import Resource
 from .documentation import * 
-from . import gestion_club, formularios_registrados
+from . import gestion_club, formularios_registrados, link_generate_inscripcion
 from ..auth import auth_user
+from flask_jwt_extended import decode_token
 
 club_bp = Blueprint('club', __name__, url_prefix='/club')
 
@@ -79,3 +80,40 @@ class VerFormularioClub(Resource):
         except Exception as e:
             return {"Error":str(e)} , 500
         
+
+
+@api.route('/v1/api/<int:id_club>/formulario/<int:id_formulario>/invitacion')
+class GenerarLinkInscripcion(Resource):
+    def post(self,id_club, id_formulario):
+        try:
+            link  = link_generate_inscripcion.generar_link(id_club, id_formulario)
+            return {"Link":link}      
+        except Exception as e:
+            return {"Error":str(e)} , 500
+        
+
+
+@api.route('/v1/api/registro_atleta')
+class obtener_formulario(Resource):
+    def get(self):
+        token = request.args.get("token")
+        if not token:
+            return {"error": "Falta token"}, 40
+
+        try:
+            # Decodificamos sin necesidad de que sea un usuario logueado
+            data = decode_token(token)
+            id_club = data["id_club"]
+            id_formulario = data["id_formulario"]
+
+            # Buscar el formulario
+            formulario = formularios_registrados.formulario_for_id(id_club, id_formulario)
+            if not formulario:
+                return {"error": "Formulario no encontrado"}, 404
+
+            return {"formulario": formulario, "id_club": id_club}, 200
+
+        except Exception as e:
+            return {"error": str(e)}, 400
+        
+    

@@ -1,6 +1,6 @@
 from conexiones.cursores import get_cursor
 from .db import Clubes, VerFormularios
-from .services import Clubs, ObtenerFormulario
+from .services import Clubs, ObtenerFormulario, InvitacionService
 
 club_auth = Clubes(get_cursor)
 formularios_de_inscripciones = VerFormularios(get_cursor)
@@ -8,4 +8,8 @@ formularios_de_inscripciones = VerFormularios(get_cursor)
 
 
 gestion_club = Clubs(club_auth)
+
 formularios_registrados = ObtenerFormulario(formularios_de_inscripciones)
+
+
+link_generate_inscripcion = InvitacionService(formularios_registrados)

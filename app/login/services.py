@@ -13,12 +13,20 @@ class LoginAuth:
             return {"Auth": "Usuario No encontrado"}, 404
 
         stored_password = user[0]['password'].encode('utf-8')
+        id_club = user[0]['id_club']
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
             resp = make_response(jsonify({"Auth": True}), 200)
             resp.set_cookie(
                 "access_token_cookie",
                 access_token,
+                httponly=True,
+                secure=False,   # True en producción con HTTPS
+                samesite="Strict"
+            )
+            resp.set_cookie(
+                "id_club_cookie",
+                str(id_club),
                 httponly=True,
                 secure=False,   # True en producción con HTTPS
                 samesite="Strict"

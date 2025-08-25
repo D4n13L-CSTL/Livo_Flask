@@ -1,4 +1,6 @@
 
+
+
 class Atletas:
     def __init__(self, atleta):
         self.atleta = atleta

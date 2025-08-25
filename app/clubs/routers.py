@@ -58,10 +58,9 @@ class FormularioClub(Resource):
         """
         try:
             data = api.payload
-            id_club = data.get('id_club')
             formulario_data = data.get('formulario')  
 
-            gestion_club.formulario_inscripcion(formulario_data, id_club)
+            gestion_club.formulario_inscripcion(formulario_data)
             return {"Response":"Formulario creado correctamente"} , 200
         
         except Exception as e:
@@ -82,10 +81,12 @@ class VerFormularioClub(Resource):
         
 
 
-@api.route('/v1/api/<int:id_club>/formulario/<int:id_formulario>/invitacion')
+@api.route('/v1/api/formulario/<int:id_formulario>/invitacion')
 class GenerarLinkInscripcion(Resource):
-    def post(self,id_club, id_formulario):
+    def post(self,id_formulario):
         try:
+            id_club = request.cookies.get("id_club_cookie")
+            print(id_club)
             link  = link_generate_inscripcion.generar_link(id_club, id_formulario)
             return {"Link":link}      
         except Exception as e:

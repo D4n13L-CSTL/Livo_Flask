@@ -27,7 +27,7 @@ class Auth(Resource):
         # 1. Decodificar token
         claims = decode_token(token)
         id_club = claims["id_club"]
-        print(id_club)
+
         id_formulario = claims["id_formulario"]
 
         # 2. Datos básicos del atleta (como en tu otro endpoint)
@@ -50,7 +50,6 @@ class Auth(Resource):
             users_atleta, nombres, apellidos, cedula, fecha_nacimiento,
             direccion, telefono, email
         )
-        print(id_atleta)
         # 4. Relacionar atleta con el club
         register_atletas.inscripcion_de_atleta(id_atleta, id_club)
 

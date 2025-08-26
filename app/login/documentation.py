@@ -8,7 +8,8 @@ payload_login = api.model('Login', {
 })
 
 respuesta_success = api.model('RespuestaSuccess', {
-    "Auth": fields.Boolean(description="Estado de autenticación")
+    "Auth": fields.Boolean(description="Estado de autenticación"),
+    "tipo_de_user": fields.String(description="Tipo de usuario")
 })
 
 respuesta_error = api.model('RespuestaError', {

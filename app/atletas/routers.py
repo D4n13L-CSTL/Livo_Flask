@@ -1,8 +1,8 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, make_response, jsonify
 from flask_jwt_extended import decode_token
 from flask_restx import  Resource
 from .documentation import * 
-from . import register_atletas
+from . import register_atletas, services_eventos
 from ..auth import auth_user
 
 atleta_bp = Blueprint('atleta', __name__, url_prefix='/atletas')
@@ -68,3 +68,9 @@ class Auth(Resource):
 
         except Exception as e:
             return {"error": str(e)}, 500
+        
+@api.route('/eventos/api/v1')
+class Eventos(Resource):
+    def get(self):
+        eventos  = services_eventos.ver_eventos_asignados()
+        return make_response(jsonify(eventos))

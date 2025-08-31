@@ -14,6 +14,7 @@ class LoginAuth:
 
         stored_password = user[0]['password'].encode('utf-8')
         id_club = user[0]['id_club']
+        id_club_atleta = user[0]['id_club_perteniciente']
         tipo_de_user = user[0]['tipo_de_user']
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
@@ -38,6 +39,14 @@ class LoginAuth:
                     str(id_club),
                     httponly=True,
                     secure=True,   # True en producción con HTTPS
+                    samesite="None"
+                )  
+            elif tipo_de_user == 'ATLETA':
+                resp.set_cookie(
+                    "id_club_atleta_cookie", #GUARDA EL ID DEL CLUB QUE PERTNECE EL ATLETA
+                    str(id_club_atleta),
+                    httponly=True,
+                    secure=True, 
                     samesite="None"
                 )
             

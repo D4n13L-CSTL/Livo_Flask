@@ -31,14 +31,17 @@ class ClubRest(Resource):
             if not club_register:
                 return {"Error": "Club no registrado"}, 400
 
-            club_user_register = auth_user.user_create(username, email, password)
+            id_tipo_user = 5
+            club_user_register = auth_user.user_create(username, email, password, id_tipo_user)
             if not club_user_register:
                 return {"Error": "Usuario del club no registrado"}, 400
 
             
-            gestion_club.register_user_club_class(club_user_register, club_register, 1)
+            
+            gestion_club.register_user_club_class(club_user_register, club_register, 3)
 
             return {"Succes": "Club registrado correctamente"}, 200
+        
         except Exception as e:
             return {"Error": str(e)}, 500
     
@@ -67,14 +70,14 @@ class FormularioClub(Resource):
             return {"Error":str(e)} , 500
 
 
-@api.route('/v1/api/formulario/<id_club>')
+@api.route('/v1/api/formulario/obtener')
 class VerFormularioClub(Resource):
     @api.response(200, 'Formulario del club', payload_formulario)
     @api.response(500, 'Error interno', respuesta_formulario_error)
-    def get(self,id_club):
+    def get(self):
         """Obtiene el formulario de inscripción de un club por su ID."""
         try:
-            club_formulario = formularios_registrados.ver_formularios(id_club)
+            club_formulario = formularios_registrados.ver_formularios()
             return make_response(jsonify(club_formulario))
         except Exception as e:
             return {"Error":str(e)} , 500

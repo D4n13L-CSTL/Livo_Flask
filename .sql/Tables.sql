@@ -68,6 +68,33 @@ CREATE TABLE tipo_de_user(
   nombre text
 )
 
+
+-- Tabla de tipos de eventos
+CREATE TABLE tipo_eventos (
+    id_tipo SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Tabla de eventos
+CREATE TABLE eventos (
+    id_evento SERIAL PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    fecha DATE NOT NULL,
+    hora TIME,
+    id_tipo INT NOT NULL,
+    FOREIGN KEY (id_tipo) REFERENCES tipo_eventos(id_tipo)
+);
+
+-- Tabla de relación entre clubes y eventos (N:M)
+CREATE TABLE eventos_club (
+    id_club INT NOT NULL,
+    id_evento INT NOT NULL,
+    PRIMARY KEY (id_club, id_evento),
+    FOREIGN KEY (id_club) REFERENCES clubes(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
+);
+
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id");

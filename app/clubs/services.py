@@ -26,7 +26,8 @@ class ObtenerFormulario(ClubBase):
     def __init__(self, clubs):
         super().__init__(clubs)
 
-    def ver_formularios(self,id_club):
+    def ver_formularios(self):
+        id_club = request.cookies.get("id_club_cookie")
         return self.club.formulario_club(id_club)
 
     def formulario_for_id(self,id_club, id_formulario):
@@ -53,7 +54,7 @@ class InvitacionService:
         )
 
         # Retornar link
-        return f"http://10.100.39.23:5041/club/v1/api/registro_atleta?token={token}"
+        return f"https://livosport.loca.lt/club/v1/api/registro_atleta?token={token}"
     
 
 class LogicAtletas(ClubBase):

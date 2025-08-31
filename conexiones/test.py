@@ -7,3 +7,5 @@ def probar_conexion():
         conn.close()
     else:
         print("❌ No se pudo conectar a la base de datos.")
+
+probar_conexion()

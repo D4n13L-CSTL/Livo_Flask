@@ -1,6 +1,6 @@
 from flask_restx import fields, Namespace
 
-api = Namespace('Login', description='Login', path='/login')
+api = Namespace('Login', description='Login', path='/')
 
 payload_login = api.model('Login', {
     "username": fields.String(required=True, description="Nombre de usuario"),
@@ -8,8 +8,7 @@ payload_login = api.model('Login', {
 })
 
 respuesta_success = api.model('RespuestaSuccess', {
-    "Auth": fields.Boolean(description="Estado de autenticación"),
-    "tipo_de_user": fields.String(description="Tipo de usuario")
+    "Success": fields.Boolean(description="Estado de autenticación")
 })
 
 respuesta_error = api.model('RespuestaError', {

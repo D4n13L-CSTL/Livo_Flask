@@ -4,9 +4,9 @@ from .documentation import *
 from . import  login_iniar
 
 
-login_bp = Blueprint('login', __name__, url_prefix='/login')
+login_bp = Blueprint('login', __name__, url_prefix='/')
 
-@api.route('/v1/api')
+@api.route('/api/v1/auth/login')
 class Login(Resource):
     @api.expect(payload_login)
     @api.response(200, description='Respuesta Succes', model=respuesta_success)

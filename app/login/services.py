@@ -17,12 +17,19 @@ class LoginAuth:
         tipo_de_user = user[0]['tipo_de_user']
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
-            resp = make_response(jsonify({"Auth": True , "tipo_de_user": tipo_de_user}), 200)
+            resp = make_response(jsonify({"Success": True }), 200)
             resp.set_cookie(
                 "access_token_cookie",
                 access_token,
                 httponly=True,
                 secure=True,   # True en producción con HTTPS
+                samesite="None"
+            )
+            resp.set_cookie(
+                "tipo_de_user",
+                tipo_de_user,
+                httponly=True,
+                secure=True, 
                 samesite="None"
             )
             if tipo_de_user == 'ADMINISTRADOR':
@@ -37,3 +44,4 @@ class LoginAuth:
             return resp
         else:
             return {"Auth": "Contraseña Incorrecta"}, 401
+        

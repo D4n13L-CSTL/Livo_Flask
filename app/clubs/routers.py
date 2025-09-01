@@ -86,7 +86,14 @@ class VerFormularioClub(Resource):
 
 @api.route('/v1/api/formulario/<int:id_formulario>/invitacion')
 class GenerarLinkInscripcion(Resource):
+    @api.doc('generar_link_inscripcion')
+    @api.response(200, 'Link generado exitosamente', link_response_model)
+    @api.response(500, 'Error al generar el link', error_response_model)
     def post(self,id_formulario):
+        """
+        Genera un link de inscripción para un formulario específico.  
+        El link contiene un token de seguridad (JWT).
+        """
         try:
             id_club = request.cookies.get("id_club_cookie")
             print(id_club)
@@ -99,10 +106,19 @@ class GenerarLinkInscripcion(Resource):
 
 @api.route('/v1/api/registro_atleta')
 class obtener_formulario(Resource):
+    @api.doc('obtener_formulario')
+    @api.param('token', 'Token de seguridad JWT', required=True)
+    @api.response(200, 'Formulario obtenido exitosamente', formulario_response_model)
+    @api.response(400, 'Token inválido o error de validación', error_response_model)
+    @api.response(404, 'Formulario no encontrado', error_response_model)
     def get(self):
+        """
+        Obtiene un formulario de inscripción a partir de un token JWT.
+        No requiere que el usuario esté autenticado.
+        """
         token = request.args.get("token")
         if not token:
-            return {"error": "Falta token"}, 40
+            return {"error": "Falta token"}, 400
 
         try:
             # Decodificamos sin necesidad de que sea un usuario logueado
@@ -124,7 +140,13 @@ class obtener_formulario(Resource):
 
 @api.route('/v1/api/atletas')
 class ObtenerAtletas(Resource):
+    @api.doc('get_atletas')
+    @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
+    @api.response(500, 'Error interno del servidor')
     def get(self):
+        """
+        Retorna la lista de atletas registrados
+        """
         try:
             return {"atletas": atletas_logic.obtener_lista_atletas()}, 200
         except Exception as e:

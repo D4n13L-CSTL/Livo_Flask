@@ -11,12 +11,17 @@ atleta_bp = Blueprint('atleta', __name__, url_prefix='/atletas')
 
 @api.route('/v1/api')
 class Auth(Resource):
-    @api.expect(payload_register, validate=True)
-    @api.response(200, 'Atleta registrado exitosamente', respuesta_success)
-    @api.response(400, 'Error de validación', respuesta_error)
-    @api.response(500, 'Error interno del servidor', respuesta_error)
+    @api.doc('registrar_atleta')
+    @api.param('token', 'Token de invitación JWT', required=True)
+    @api.expect(registro_payload, validate=True)
+    @api.response(201, 'Atleta registrado exitosamente', registro_response)
+    @api.response(400, 'Error en datos o no se pudo crear el usuario', error_response_model)
+    @api.response(500, 'Error interno del servidor', error_response_model)
     def post(self):
-        """Registro de atletas en el sistema"""
+        """
+        Registra un atleta en un club a partir de un token de invitación.  
+        Incluye datos básicos del atleta y respuestas personalizadas del formulario creado por el club.
+        """
         try:
             token = request.args.get("token")
             data = request.json  # datos enviados por el atleta (payload dinámico + fijo)
@@ -69,8 +74,14 @@ class Auth(Resource):
         except Exception as e:
             return {"error": str(e)}, 500
         
+
 @api.route('/eventos/api/v1')
 class Eventos(Resource):
+    @api.doc('get_eventos_asignados')
+    @api.marshal_list_with(evento_model)  # Indica que devuelve una lista de eventos
     def get(self):
+        """
+        Retorna la lista de eventos asignados a un club
+        """
         eventos  = services_eventos.ver_eventos_asignados()
         return make_response(jsonify(eventos))

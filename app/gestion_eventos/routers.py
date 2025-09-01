@@ -7,8 +7,16 @@ gestion_bp = Blueprint('gestion_evento', __name__, url_prefix='/eventos')
 
 @api.route('/api/v1')
 class GestionarEventos(Resource):
-    
+    @api.doc('crear_evento')
+    @api.expect(evento_payload, validate=True)
+    @api.response(200, 'Evento creado exitosamente', evento_response)
+    @api.response(500, 'Error interno del servidor', error_response)
     def post(self):
+        """
+        Crea un nuevo evento dentro del club.
+        
+        Requiere los datos básicos del evento: nombre, descripción, fecha, hora e id_tipo.
+        """ 
         try:
             data = api.payload
             nombre = data['nombre'] 
@@ -23,7 +31,15 @@ class GestionarEventos(Resource):
         except Exception as e:
             return {"Error":str(e)} , 500
         
-    
+    @api.doc('listar_eventos')
+    @api.marshal_list_with(evento_model)
+    @api.response(500, 'Error interno del servidor', error_response)
     def get(self):
-        evento = obtener_eventos.readEventos()
-        return make_response(jsonify(evento))
+        """
+        Retorna la lista de eventos asignados por un club.
+        """
+        try:
+            evento = obtener_eventos.readEventos()
+            return make_response(jsonify(evento)) , 200
+        except Exception as e:
+            return {"Error":str(e)} , 500

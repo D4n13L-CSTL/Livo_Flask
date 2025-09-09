@@ -5,7 +5,6 @@ from . import gestion_club, formularios_registrados, link_generate_inscripcion, 
 from ..auth import auth_user
 from flask_jwt_extended import decode_token
 
-club_bp = Blueprint('club', __name__, url_prefix='/club')
 
 
 

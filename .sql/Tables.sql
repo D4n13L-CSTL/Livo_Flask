@@ -95,6 +95,40 @@ CREATE TABLE eventos_club (
     FOREIGN KEY (id_evento) REFERENCES eventos(id_evento) ON DELETE CASCADE
 );
 
+
+-----------------------------------------------------------------------------------------
+-- Tabla de métodos de pago (transferencia, depósito, efectivo, etc.)
+CREATE TABLE metodo_pago (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Pagos reportados por los atletas a un club
+CREATE TABLE pagos (
+    id SERIAL PRIMARY KEY,
+    id_atleta INT NOT NULL REFERENCES atletas(id) ON DELETE CASCADE,
+    id_club INT NOT NULL REFERENCES clubes(id) ON DELETE CASCADE,
+    monto NUMERIC(10,2) NOT NULL,
+    fecha_pago DATE NOT NULL,
+    referencia VARCHAR(100), -- nro de transacción, recibo, etc.
+    id_metodo INT REFERENCES metodo_pago(id),
+    comprobante_url TEXT, -- si guardas evidencia (ej: imagen/pdf en S3)
+    estado VARCHAR(20) DEFAULT 'pendiente', 
+    -- valores: pendiente, aprobado, rechazado
+    fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Historial de revisiones (para que el club pueda cambiar estado con comentarios)
+CREATE TABLE pagos_historial (
+    id SERIAL PRIMARY KEY,
+    id_pago INT NOT NULL REFERENCES pagos(id) ON DELETE CASCADE,
+    estado VARCHAR(20) NOT NULL, -- pendiente, aprobado, rechazado
+    comentario TEXT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_usuario INT REFERENCES usuarios(id) -- quien hizo la acción (admin club)
+);
+
+
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id");

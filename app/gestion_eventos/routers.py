@@ -3,7 +3,6 @@ from flask_restx import Resource
 from .documentation import * 
 from . import creacion_de_eventos, obtener_eventos
 
-gestion_bp = Blueprint('gestion_evento', __name__, url_prefix='/eventos')
 
 @api.route('/api/v1')
 class GestionarEventos(Resource):

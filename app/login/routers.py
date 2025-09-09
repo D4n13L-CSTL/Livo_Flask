@@ -4,7 +4,6 @@ from .documentation import *
 from . import  login_iniar
 
 
-login_bp = Blueprint('login', __name__, url_prefix='/')
 
 @api.route('/api/v1/auth/login')
 class Login(Resource):

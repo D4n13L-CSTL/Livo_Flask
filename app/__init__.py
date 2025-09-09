@@ -4,11 +4,12 @@ from flask_cors import CORS
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
 
-from app.auth.routers import bp as auth_bp, api as api_auth
-from app.atletas.routers import atleta_bp, api as api_atleta
-from app.clubs.routers import club_bp, api as api_club
-from app.login.routers import login_bp, api as api_login
-from app.gestion_eventos.routers import gestion_bp, api as api_gestion_eventos
+from app.auth.routers import  api as api_auth
+from app.atletas.routers import   api as api_atleta
+from app.clubs.routers import  api as api_club
+from app.login.routers import  api as api_login
+from app.gestion_eventos.routers import  api as api_gestion_eventos
+from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
 
 def create_app():
     app = Flask(__name__)
@@ -29,17 +30,14 @@ def create_app():
               title='Livo Flask')
 
 
-    app.register_blueprint(auth_bp)
-    app.register_blueprint(atleta_bp)
-    app.register_blueprint(club_bp)
-    app.register_blueprint(login_bp)
-    app.register_blueprint(gestion_bp)
+    
     
     api.add_namespace(api_auth)
     api.add_namespace(api_atleta)
     api.add_namespace(api_club)
     api.add_namespace(api_login)
     api.add_namespace(api_gestion_eventos)
+    api.add_namespace(api_gestion_pago_atletas)
     
 
     return app

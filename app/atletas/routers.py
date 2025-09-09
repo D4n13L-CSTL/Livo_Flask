@@ -5,7 +5,6 @@ from .documentation import *
 from . import register_atletas, services_eventos
 from ..auth import auth_user
 
-atleta_bp = Blueprint('atleta', __name__, url_prefix='/atletas')
 
 
 

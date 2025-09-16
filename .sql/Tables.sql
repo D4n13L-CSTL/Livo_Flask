@@ -129,6 +129,21 @@ CREATE TABLE pagos_historial (
 );
 
 
+
+
+CREATE TABLE asistencias (
+  id SERIAL PRIMARY KEY,
+  id_atleta INT NOT NULL,
+  fecha DATE NOT NULL DEFAULT CURRENT_DATE,
+  presente BOOLEAN,
+  observaciones TEXT,
+  CONSTRAINT fk_asistencia_atleta FOREIGN KEY (id_atleta)
+    REFERENCES atletas (id)
+    ON DELETE CASCADE
+);
+
+
+
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_usuario") REFERENCES "usuarios" ("id");

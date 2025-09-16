@@ -1,11 +1,10 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restx import Resource
 from .documentation import * 
-from . import gestion_club, formularios_registrados, link_generate_inscripcion
+from . import gestion_club, formularios_registrados, link_generate_inscripcion, atletas_logic
 from ..auth import auth_user
 from flask_jwt_extended import decode_token
 
-club_bp = Blueprint('club', __name__, url_prefix='/club')
 
 
 
@@ -31,14 +30,17 @@ class ClubRest(Resource):
             if not club_register:
                 return {"Error": "Club no registrado"}, 400
 
-            club_user_register = auth_user.user_create(username, email, password)
+            id_tipo_user = 5
+            club_user_register = auth_user.user_create(username, email, password, id_tipo_user)
             if not club_user_register:
                 return {"Error": "Usuario del club no registrado"}, 400
 
             
-            gestion_club.register_user_club_class(club_user_register, club_register, 1)
+            
+            gestion_club.register_user_club_class(club_user_register, club_register, 3)
 
             return {"Succes": "Club registrado correctamente"}, 200
+        
         except Exception as e:
             return {"Error": str(e)}, 500
     
@@ -58,34 +60,42 @@ class FormularioClub(Resource):
         """
         try:
             data = api.payload
-            id_club = data.get('id_club')
             formulario_data = data.get('formulario')  
 
-            gestion_club.formulario_inscripcion(formulario_data, id_club)
+            gestion_club.formulario_inscripcion(formulario_data)
             return {"Response":"Formulario creado correctamente"} , 200
         
         except Exception as e:
             return {"Error":str(e)} , 500
 
 
-@api.route('/v1/api/formulario/<id_club>')
+@api.route('/v1/api/formulario/obtener')
 class VerFormularioClub(Resource):
     @api.response(200, 'Formulario del club', payload_formulario)
     @api.response(500, 'Error interno', respuesta_formulario_error)
-    def get(self,id_club):
+    def get(self):
         """Obtiene el formulario de inscripción de un club por su ID."""
         try:
-            club_formulario = formularios_registrados.ver_formularios(id_club)
+            club_formulario = formularios_registrados.ver_formularios()
             return make_response(jsonify(club_formulario))
         except Exception as e:
             return {"Error":str(e)} , 500
         
 
 
-@api.route('/v1/api/<int:id_club>/formulario/<int:id_formulario>/invitacion')
+@api.route('/v1/api/formulario/<int:id_formulario>/invitacion')
 class GenerarLinkInscripcion(Resource):
-    def post(self,id_club, id_formulario):
+    @api.doc('generar_link_inscripcion')
+    @api.response(200, 'Link generado exitosamente', link_response_model)
+    @api.response(500, 'Error al generar el link', error_response_model)
+    def post(self,id_formulario):
+        """
+        Genera un link de inscripción para un formulario específico.  
+        El link contiene un token de seguridad (JWT).
+        """
         try:
+            id_club = request.cookies.get("id_club_cookie")
+            print(id_club)
             link  = link_generate_inscripcion.generar_link(id_club, id_formulario)
             return {"Link":link}      
         except Exception as e:
@@ -95,10 +105,19 @@ class GenerarLinkInscripcion(Resource):
 
 @api.route('/v1/api/registro_atleta')
 class obtener_formulario(Resource):
+    @api.doc('obtener_formulario')
+    @api.param('token', 'Token de seguridad JWT', required=True)
+    @api.response(200, 'Formulario obtenido exitosamente', formulario_response_model)
+    @api.response(400, 'Token inválido o error de validación', error_response_model)
+    @api.response(404, 'Formulario no encontrado', error_response_model)
     def get(self):
+        """
+        Obtiene un formulario de inscripción a partir de un token JWT.
+        No requiere que el usuario esté autenticado.
+        """
         token = request.args.get("token")
         if not token:
-            return {"error": "Falta token"}, 40
+            return {"error": "Falta token"}, 400
 
         try:
             # Decodificamos sin necesidad de que sea un usuario logueado
@@ -116,4 +135,18 @@ class obtener_formulario(Resource):
         except Exception as e:
             return {"error": str(e)}, 400
         
-    
+
+
+@api.route('/v1/api/atletas')
+class ObtenerAtletas(Resource):
+    @api.doc('get_atletas')
+    @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
+    @api.response(500, 'Error interno del servidor')
+    def get(self):
+        """
+        Retorna la lista de atletas registrados
+        """
+        try:
+            return {"atletas": atletas_logic.obtener_lista_atletas()}, 200
+        except Exception as e:
+            return {"Error": str(e)}, 500

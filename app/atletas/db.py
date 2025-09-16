@@ -22,3 +22,16 @@ class WriteAleta(WriteDAO):
 
                 """
         return self.execute(query, (id_atleta,id_formulario,json.dumps(respuestas)))
+    
+
+class VerEventosAsignados(BaseDAO):
+    def verEventos(self, id_club):
+        query = """
+                select eventos.nombre, eventos.descripcion, eventos.fecha, eventos.hora ,tipo_eventos.nombre  from eventos
+                join eventos_club on eventos.id_evento  = eventos_club.id_evento
+                join tipo_eventos on tipo_eventos.id_tipo = eventos.id_tipo
+                join clubes on clubes.id = eventos_club.id_club
+                where clubes.id = %s
+                """
+        
+        return self.fetch_all(query, (id_club,))

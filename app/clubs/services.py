@@ -1,5 +1,6 @@
 from flask_jwt_extended import create_access_token
-from datetime import timedelta, datetime
+from flask import request
+from datetime import timedelta
 
 class ClubBase:
     def __init__(self, clubs):
@@ -16,7 +17,8 @@ class Clubs(ClubBase):
     def register_user_club_class(self,id_usuario, id_club, id_rol):
         return self.club.register_user_club(id_usuario, id_club, id_rol)
     
-    def formulario_inscripcion(self, formulario,id_club):
+    def formulario_inscripcion(self, formulario):
+        id_club = request.cookies.get("id_club_cookie")
         return self.club.crear_formulario_de_inscripcion(formulario,id_club)
     
 
@@ -24,7 +26,8 @@ class ObtenerFormulario(ClubBase):
     def __init__(self, clubs):
         super().__init__(clubs)
 
-    def ver_formularios(self,id_club):
+    def ver_formularios(self):
+        id_club = request.cookies.get("id_club_cookie")
         return self.club.formulario_club(id_club)
 
     def formulario_for_id(self,id_club, id_formulario):
@@ -51,4 +54,13 @@ class InvitacionService:
         )
 
         # Retornar link
-        return f"http://192.168.2.112:5041/club/v1/api/registro_atleta?token={token}"
+        return f"https://livosport.loca.lt/club/v1/api/registro_atleta?token={token}"
+    
+
+class LogicAtletas(ClubBase):
+    def __init__(self, clubs):
+        super().__init__(clubs)
+        
+    def obtener_lista_atletas(self):
+        id_club = request.cookies.get("id_club_cookie")
+        return self.club.lista_atletas(id_club)

@@ -13,16 +13,64 @@ class LoginAuth:
             return {"Auth": "Usuario No encontrado"}, 404
 
         stored_password = user[0]['password'].encode('utf-8')
+        id_club = user[0]['id_club']
+        id_club_atleta = user[0]['id_club_perteniciente']
+        tipo_de_user = user[0]['tipo_de_user']
+        id_atleta = user[0]['id_atleta']
+        id_usuario= user[0]['id_usuario']
+        
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
-            resp = make_response(jsonify({"Auth": True}), 200)
+            resp = make_response(jsonify({"Success": True }), 200)
+            #CAMBIAR EL SECURE A TRUE CUANDO HAYA REALIZADO EL MODULO
             resp.set_cookie(
                 "access_token_cookie",
                 access_token,
                 httponly=True,
                 secure=False,   # True en producción con HTTPS
-                samesite="Strict"
+                samesite="None"
             )
+            resp.set_cookie(
+                "tipo_de_user",
+                tipo_de_user,
+                httponly=True,
+                secure=False, 
+                samesite="None"
+            )
+            resp.set_cookie(
+                "id_usuario",
+                str(id_usuario),
+                httponly=True,
+                secure=False, 
+                samesite="None"
+            )
+
+            
+            if tipo_de_user == 'ADMINISTRADOR':
+                resp.set_cookie(
+                    "id_club_cookie",
+                    str(id_club),
+                    httponly=True,
+                    secure=False,   # True en producción con HTTPS
+                    samesite="None"
+                )  
+            elif tipo_de_user == 'ATLETA':
+                resp.set_cookie(
+                    "id_club_atleta_cookie", #GUARDA EL ID DEL CLUB QUE PERTNECE EL ATLETA
+                    str(id_club_atleta),
+                    httponly=True,
+                    secure=False, 
+                    samesite="None"
+                )
+                resp.set_cookie(
+                "id_atleta",
+                str(id_atleta),
+                httponly=True,
+                secure=False,
+                samesite="None"
+                )
+            
             return resp
         else:
             return {"Auth": "Contraseña Incorrecta"}, 401
+        

@@ -29,17 +29,21 @@ class VerFormularios(BaseDAO):
 
     def formulario_club(self, id_club):
         query = """
-                select id, formulario from formulario_registro_atleta where id_club = %s
+                select id as id_form, formulario from formulario_registro_atleta where id_club = %s
                 """
     
         return self.fetch_all(query,(id_club,))
 
     def formulario_x_id_and_id_club(self, id_club, id_formulario):
         query = """
-            SELECT formulario
-            FROM formulario_registro_atleta 
-            WHERE id_club = %s AND id = %s
+        SELECT * FROM obtener_formulario(%s,%s) as formulario;
         """
         return self.fetch_all(query,  (id_club, id_formulario))
-    
-
+  
+  
+class ListaAtletas(BaseDAO):
+    def lista_atletas(self, id_club):
+        query = """
+        SELECT * FROM obtener_atletas_por_club(%s);
+        """
+        return self.fetch_all(query, (id_club,))

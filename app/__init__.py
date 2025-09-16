@@ -10,7 +10,7 @@ from app.clubs.routers import  api as api_club
 from app.login.routers import  api as api_login
 from app.gestion_eventos.routers import  api as api_gestion_eventos
 from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
-
+from app.asistencias.routers import api as api_asistencias
 def create_app():
     app = Flask(__name__)
     app.config['SESSION_COOKIE_NAME'] = 'session'
@@ -38,6 +38,7 @@ def create_app():
     api.add_namespace(api_login)
     api.add_namespace(api_gestion_eventos)
     api.add_namespace(api_gestion_pago_atletas)
+    api.add_namespace(api_asistencias)
     
 
     return app

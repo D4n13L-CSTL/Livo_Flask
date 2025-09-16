@@ -66,7 +66,7 @@ CREATE TABLE respuestas_formulario_atleta (
 CREATE TABLE tipo_de_user(
   id serial PRIMARY KEY,
   nombre text
-)
+);
 
 
 -- Tabla de tipos de eventos

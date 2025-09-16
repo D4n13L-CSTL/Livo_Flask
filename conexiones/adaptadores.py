@@ -6,11 +6,23 @@ import os
 # Load environment variables from .env
 load_dotenv()
 
-USER = os.getenv("user")
-PASSWORD = os.getenv("password")
-HOST = os.getenv("host")
-PORT = os.getenv("port")
-DBNAME = os.getenv("dbname")
+USER = os.getenv("user_supabase")
+PASSWORD = os.getenv("password_supabase")
+HOST = os.getenv("host_supabase")
+PORT = os.getenv("port_supabase")
+DBNAME = os.getenv("dbname_supabase")
+
+""" 
+def conexion_db():
+    connection = psycopg2.connect(
+            user=os.getenv("user"),
+            password=os.getenv("password"),
+            host=os.getenv("host"),
+            port=os.getenv("port"),
+            dbname=os.getenv("dbname"))
+    return connection
+"""
+
 
 def conexion_db():
     connection = psycopg2.connect(
@@ -20,3 +32,6 @@ def conexion_db():
             port=PORT,
             dbname=DBNAME)
     return connection
+
+
+#////////////////////////////////////

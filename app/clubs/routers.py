@@ -30,14 +30,14 @@ class ClubRest(Resource):
             if not club_register:
                 return {"Error": "Club no registrado"}, 400
 
-            id_tipo_user = 5
+            id_tipo_user = 1
             club_user_register = auth_user.user_create(username, email, password, id_tipo_user)
             if not club_user_register:
                 return {"Error": "Usuario del club no registrado"}, 400
 
             
-            
-            gestion_club.register_user_club_class(club_user_register, club_register, 3)
+            rol_de_club = 1
+            gestion_club.register_user_club_class(club_user_register, club_register, rol_de_club)
 
             return {"Succes": "Club registrado correctamente"}, 200
         

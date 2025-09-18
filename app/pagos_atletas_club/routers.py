@@ -2,9 +2,11 @@ from flask_restx import Resource
 from .documentation import *
 from . import realizar_pago, visualizacion_de_pagos_services, cambio_de_estatus_services, historial_services
 from flask import make_response, jsonify
+from flask_jwt_extended import jwt_required
 
 @api.route('/api/v1')
 class  GestionPago(Resource):
+    @jwt_required
     def post(self):
         data = api.payload
         id_club = data.get('id_club')
@@ -20,6 +22,7 @@ class  GestionPago(Resource):
 
 @api.route('/api/v1/ver_pagos')
 class VisualizacionDePago(Resource):
+    @jwt_required
     def get(self):
         pagos_pendientes  = visualizacion_de_pagos_services.pagos_pendientes()
         return make_response(jsonify(pagos_pendientes))
@@ -28,6 +31,7 @@ class VisualizacionDePago(Resource):
     
 @api.route('/api/v1/update_status')
 class CambioDeStatusRoutes(Resource):
+    @jwt_required
     def put(self):
         data = api.payload
         estado  = data.get('estado')

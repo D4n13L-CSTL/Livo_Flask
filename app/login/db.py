@@ -6,7 +6,8 @@ class loginUser(BaseDAO):
 
         query = """
             select clubes_usuarios.id_club,club_atleta.id_club as id_club_perteniciente,tipo_de_user.nombre as tipo_de_user,atletas.id as id_atleta,
-            usuarios.username, usuarios.password from usuarios
+            usuarios.username, usuarios.password,usuarios.id as id_usuario
+            from usuarios
             left join atletas on atletas.id_usuario = usuarios.id
             join tipo_de_user on usuarios.tipo_de_user_id = tipo_de_user.id
             left join clubes_usuarios on usuarios.id = clubes_usuarios.id_usuario

@@ -66,7 +66,7 @@ CREATE TABLE respuestas_formulario_atleta (
 CREATE TABLE tipo_de_user(
   id serial PRIMARY KEY,
   nombre text
-)
+);
 
 
 -- Tabla de tipos de eventos
@@ -127,6 +127,21 @@ CREATE TABLE pagos_historial (
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     id_usuario INT REFERENCES usuarios(id) -- quien hizo la acción (admin club)
 );
+
+
+
+
+CREATE TABLE asistencias (
+  id SERIAL PRIMARY KEY,
+  id_atleta INT NOT NULL,
+  fecha DATE NOT NULL DEFAULT CURRENT_DATE,
+  presente BOOLEAN,
+  observaciones TEXT,
+  CONSTRAINT fk_asistencia_atleta FOREIGN KEY (id_atleta)
+    REFERENCES atletas (id)
+    ON DELETE CASCADE
+);
+
 
 
 ALTER TABLE "clubes_usuarios" ADD FOREIGN KEY ("id_club") REFERENCES "clubes" ("id");

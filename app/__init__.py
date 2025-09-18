@@ -1,8 +1,11 @@
-from flask import Flask
+from flask import Flask, jsonify, make_response
 from config import settings
 from flask_cors import CORS
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
+from flask_jwt_extended.exceptions import NoAuthorizationError
+
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
 from app.auth.routers import  api as api_auth
 from app.atletas.routers import   api as api_atleta
@@ -11,7 +14,32 @@ from app.login.routers import  api as api_login
 from app.gestion_eventos.routers import  api as api_gestion_eventos
 from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
 from app.asistencias.routers import api as api_asistencias
+
+api = Api(  
+    doc='/docs',
+    title='Livo Flask',
+    version='1.0',
+    description='API para Livo Sport'
+              )
+    
+jwt = JWTManager()
+
+
+
+@api.errorhandler(ExpiredSignatureError)
+def handle_expired_error(e):
+        return {"Error": "Token expirado"}, 401
+
+@api.errorhandler(InvalidTokenError)
+def handle_invalid_token_error(e):
+        return {"Error": f"Token inválido: {e}"}, 422
+    
+@api.errorhandler(NoAuthorizationError)
+def handle_no_authorization_error(e):
+    return {"error": "Token de autenticación faltante"}, 401
+
 def create_app():
+
     app = Flask(__name__)
     app.config['SESSION_COOKIE_NAME'] = 'session'
     app.config['SECRET_KEY'] = settings.SECRET_KEY
@@ -22,15 +50,11 @@ def create_app():
     app.config["JWT_COOKIE_HTTPONLY"] = settings.JWT_COOKIE_HTTPONLY
     app.config["JWT_COOKIE_SAMESITE"] =  settings.JWT_COOKIE_SAMESITE
 
-    jwt = JWTManager(app)
-
-    CORS(app, supports_credentials=True, origins=["https://livosport.loca.lt" , "http://10.100.39.42:3000","http://10.100.39.23:3000"])
-    api = Api(app, 
-              doc='/docs',
-              title='Livo Flask')
-
-
+    jwt.init_app(app)
+    api.init_app(app)
+ 
     
+    CORS(app, supports_credentials=True, origins=["*"])
     
     api.add_namespace(api_auth)
     api.add_namespace(api_atleta)

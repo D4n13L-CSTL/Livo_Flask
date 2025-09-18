@@ -3,7 +3,7 @@ from flask_restx import Resource
 from .documentation import * 
 from . import gestion_club, formularios_registrados, link_generate_inscripcion, atletas_logic
 from ..auth import auth_user
-from flask_jwt_extended import decode_token
+from flask_jwt_extended import decode_token, jwt_required
 
 
 
@@ -73,13 +73,13 @@ class FormularioClub(Resource):
 class VerFormularioClub(Resource):
     @api.response(200, 'Formulario del club', payload_formulario)
     @api.response(500, 'Error interno', respuesta_formulario_error)
+    @jwt_required()
     def get(self):
         """Obtiene el formulario de inscripción de un club por su ID."""
-        try:
-            club_formulario = formularios_registrados.ver_formularios()
-            return make_response(jsonify(club_formulario))
-        except Exception as e:
-            return {"Error":str(e)} , 500
+        
+        club_formulario = formularios_registrados.ver_formularios()
+        return make_response(jsonify(club_formulario))
+        
         
 
 

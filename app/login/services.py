@@ -11,11 +11,12 @@ class LoginAuth:
         user = self.login_user_dao.login_user(username)
         if not user:
             return {"Auth": "Usuario No encontrado"}, 404
-
+        print(user)
         stored_password = user[0]['password'].encode('utf-8')
         id_club = user[0]['id_club']
         id_club_atleta = user[0]['id_club_perteniciente']
         tipo_de_user = user[0]['tipo_de_user']
+        id_atleta = user[0]['id_atleta']
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
             resp = make_response(jsonify({"Success": True }), 200)
@@ -49,6 +50,13 @@ class LoginAuth:
                     secure=True, 
                     samesite="None"
                 )
+            elif tipo_de_user == 'ATLETA':
+                resp.set_cookie(
+                    "id_atleta", 
+                    str(id_atleta),
+                    httponly=True,
+                    secure=True, 
+                    samesite="None")
             
             return resp
         else:

@@ -16,7 +16,7 @@ class Login(Resource):
             """Api para login"""
             try:
                 data = api.payload
-                username = data['username']
+                username = data['username'].upper()
                 password = data['password']
                 if username and password:
                     return login_iniar.login_user_service(username, password)

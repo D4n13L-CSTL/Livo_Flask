@@ -23,7 +23,7 @@ class ClubRest(Resource):
             administrador = data["nombre_administrador"]
             email = data["email_club"]
             telefono = data["telefono_club"]
-            username = data['username']
+            username = data['username'].upper()
             password = data['password']
 
             club_register = gestion_club.register_club_id(nombre, administrador, email, telefono)

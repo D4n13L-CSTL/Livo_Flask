@@ -48,7 +48,7 @@ class Auth(Resource):
             password = data.get("password")
 
             # 3. Crear usuario y atleta
-            id_tipo_de_user = 4
+            id_tipo_de_user = 2
             users_atleta = auth_user.user_create(username, email, password, id_tipo_de_user)
 
             if not users_atleta:

@@ -1,6 +1,6 @@
 import bcrypt
 from flask import make_response, jsonify
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,get_csrf_token
 
 
 class LoginAuth:
@@ -23,6 +23,7 @@ class LoginAuth:
             access_token = create_access_token(identity=username)
             resp = make_response(jsonify({"Success": True }), 200)
             #CAMBIAR EL SECURE A TRUE CUANDO HAYA REALIZADO EL MODULO
+            resp.headers["X-CSRF-TOKEN"] = get_csrf_token(access_token)
             resp.set_cookie(
                 "access_token_cookie",
                 access_token,

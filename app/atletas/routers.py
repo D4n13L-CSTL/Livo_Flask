@@ -79,7 +79,7 @@ class Auth(Resource):
 class Eventos(Resource):
     @api.doc('get_eventos_asignados')
     @api.marshal_list_with(evento_model)  # Indica que devuelve una lista de eventos
-    @jwt_required
+    @jwt_required()
     def get(self):
         """
         Retorna la lista de eventos asignados a un club

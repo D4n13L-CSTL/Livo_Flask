@@ -18,7 +18,7 @@ class LoginAuth:
         tipo_de_user = user[0]['tipo_de_user']
         id_atleta = user[0]['id_atleta']
         id_usuario= user[0]['id_usuario']
-        
+
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
             resp = make_response(jsonify({"Success": True }), 200)

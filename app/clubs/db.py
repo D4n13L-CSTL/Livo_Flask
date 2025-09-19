@@ -43,6 +43,7 @@ class VerFormularios(BaseDAO):
   
 class ListaAtletas(BaseDAO):
     def lista_atletas(self, id_club):
+    
         query = """
         SELECT * FROM obtener_atletas_por_club(%s);
         """

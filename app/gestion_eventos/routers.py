@@ -5,7 +5,7 @@ from . import creacion_de_eventos, obtener_eventos
 from flask_jwt_extended import jwt_required
 
 
-@api.route('/api/v1')
+@api.route('')
 class GestionarEventos(Resource):
     @api.doc('crear_evento')
     @api.expect(evento_payload, validate=True)

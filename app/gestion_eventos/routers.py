@@ -2,6 +2,7 @@ from flask import Blueprint, make_response, request, jsonify
 from flask_restx import Resource
 from .documentation import * 
 from . import creacion_de_eventos, obtener_eventos
+from flask_jwt_extended import jwt_required
 
 
 @api.route('/api/v1')
@@ -10,6 +11,7 @@ class GestionarEventos(Resource):
     @api.expect(evento_payload, validate=True)
     @api.response(200, 'Evento creado exitosamente', evento_response)
     @api.response(500, 'Error interno del servidor', error_response)
+    @jwt_required
     def post(self):
         """
         Crea un nuevo evento dentro del club.
@@ -33,6 +35,7 @@ class GestionarEventos(Resource):
     @api.doc('listar_eventos')
     @api.marshal_list_with(evento_model)
     @api.response(500, 'Error interno del servidor', error_response)
+    @jwt_required
     def get(self):
         """
         Retorna la lista de eventos asignados por un club.

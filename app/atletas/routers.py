@@ -1,5 +1,5 @@
 from flask import Blueprint, request, make_response, jsonify
-from flask_jwt_extended import decode_token
+from flask_jwt_extended import decode_token, jwt_required
 from flask_restx import  Resource
 from .documentation import * 
 from . import register_atletas, services_eventos
@@ -16,6 +16,7 @@ class Auth(Resource):
     @api.response(201, 'Atleta registrado exitosamente', registro_response)
     @api.response(400, 'Error en datos o no se pudo crear el usuario', error_response_model)
     @api.response(500, 'Error interno del servidor', error_response_model)
+    
     def post(self):
         """
         Registra un atleta en un club a partir de un token de invitación.  
@@ -78,6 +79,7 @@ class Auth(Resource):
 class Eventos(Resource):
     @api.doc('get_eventos_asignados')
     @api.marshal_list_with(evento_model)  # Indica que devuelve una lista de eventos
+    @jwt_required
     def get(self):
         """
         Retorna la lista de eventos asignados a un club

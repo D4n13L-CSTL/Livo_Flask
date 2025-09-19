@@ -28,6 +28,7 @@ class ObtenerFormulario(ClubBase):
 
     def ver_formularios(self):
         id_club = request.cookies.get("id_club_cookie")
+        print(id_club)
         return self.club.formulario_club(id_club)
 
     def formulario_for_id(self,id_club, id_formulario):
@@ -63,4 +64,5 @@ class LogicAtletas(ClubBase):
         
     def obtener_lista_atletas(self):
         id_club = request.cookies.get("id_club_cookie")
+        print(id_club)
         return self.club.lista_atletas(id_club)

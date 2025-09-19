@@ -49,6 +49,7 @@ def create_app():
     app.config["JWT_COOKIE_SECURE"] = settings.JWT_COOKIE_SECURE
     app.config["JWT_COOKIE_HTTPONLY"] = settings.JWT_COOKIE_HTTPONLY
     app.config["JWT_COOKIE_SAMESITE"] =  settings.JWT_COOKIE_SAMESITE
+    app.config["JWT_COOKIE_CSRF_PROTECT"] =  settings.JWT_COOKIE_CSRF_PROTECT
 
     jwt.init_app(app)
     api.init_app(app)

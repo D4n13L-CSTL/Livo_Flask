@@ -54,8 +54,8 @@ class InvitacionService:
             expires_delta=timedelta(days=7)
         )
 
-        # Retornar link
-        return f"https://livosport.loca.lt/club/v1/api/registro_atleta?token={token}"
+        #Retornar link
+        return f"https://livo-flask.onrender.com/club/v1/api/registro_atleta?token={token}"
     
 
 class LogicAtletas(ClubBase):

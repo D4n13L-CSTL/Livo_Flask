@@ -124,7 +124,6 @@ class obtener_formulario(Resource):
         try:
             # Decodificamos sin necesidad de que sea un usuario logueado
             data = decode_token(token)
-            print(data)
             id_club = data["id_club"]
             id_formulario = data["id_formulario"]
 

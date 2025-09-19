@@ -50,7 +50,7 @@ class FormularioClub(Resource):
     @api.expect(payload_formulario)
     @api.response(200, 'Formulario creado correctamente', respuesta_formulario_success)
     @api.response(500, 'Error interno', respuesta_formulario_error)
-    @jwt_required
+    @jwt_required()
     def post(self):
         """Crea un formulario de inscripción para un club.
 
@@ -88,7 +88,7 @@ class GenerarLinkInscripcion(Resource):
     @api.doc('generar_link_inscripcion')
     @api.response(200, 'Link generado exitosamente', link_response_model)
     @api.response(500, 'Error al generar el link', error_response_model)
-    @jwt_required
+    @jwt_required()
     def post(self,id_formulario):
         """
         Genera un link de inscripción para un formulario específico.  
@@ -111,7 +111,7 @@ class obtener_formulario(Resource):
     @api.response(200, 'Formulario obtenido exitosamente', formulario_response_model)
     @api.response(400, 'Token inválido o error de validación', error_response_model)
     @api.response(404, 'Formulario no encontrado', error_response_model)
-    @jwt_required
+    @jwt_required()
     def get(self):
         """
         Obtiene un formulario de inscripción a partir de un token JWT.
@@ -124,6 +124,7 @@ class obtener_formulario(Resource):
         try:
             # Decodificamos sin necesidad de que sea un usuario logueado
             data = decode_token(token)
+            print(data)
             id_club = data["id_club"]
             id_formulario = data["id_formulario"]
 
@@ -139,17 +140,18 @@ class obtener_formulario(Resource):
         
 
 
-@api.route('/v1/api/atletas')
-class ObtenerAtletas(Resource):
-    @api.doc('get_atletas')
-    @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
-    @api.response(500, 'Error interno del servidor')
-    @jwt_required
-    def get(self):
-        """
-        Retorna la lista de atletas registrados
-        """
-        try:
-            return {"atletas": atletas_logic.obtener_lista_atletas()}, 200
-        except Exception as e:
-            return {"Error": str(e)}, 500
+    @api.route('/v1/api/atletas')
+    class ObtenerAtletas(Resource):
+        @api.doc('get_atletas')
+        @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
+        @api.response(500, 'Error interno del servidor')
+        @jwt_required()
+        def get(self):
+            """
+            Retorna la lista de atletas registrados
+            """
+            atleta = atletas_logic.obtener_lista_atletas()
+            try:
+                return {"atletas": atleta}, 200
+            except Exception as e:
+                return {"Error": str(e)}, 500

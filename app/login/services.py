@@ -18,7 +18,7 @@ class LoginAuth:
         tipo_de_user = user[0]['tipo_de_user']
         id_atleta = user[0]['id_atleta']
         id_usuario= user[0]['id_usuario']
-        
+
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
             resp = make_response(jsonify({"Success": True }), 200)
@@ -27,21 +27,21 @@ class LoginAuth:
                 "access_token_cookie",
                 access_token,
                 httponly=True,
-                secure=True,   # True en producción con HTTPS
+                secure=False,   # True en producción con HTTPS
                 samesite="None"
             )
             resp.set_cookie(
                 "tipo_de_user",
                 tipo_de_user,
                 httponly=True,
-                secure=True, 
+                secure=False, 
                 samesite="None"
             )
             resp.set_cookie(
                 "id_usuario",
                 str(id_usuario),
                 httponly=True,
-                secure=True, 
+                secure=False, 
                 samesite="None"
             )
 
@@ -51,7 +51,7 @@ class LoginAuth:
                     "id_club_cookie",
                     str(id_club),
                     httponly=True,
-                    secure=True,   # True en producción con HTTPS
+                    secure=False,   # True en producción con HTTPS
                     samesite="None"
                 )  
             elif tipo_de_user == 'ATLETA':
@@ -59,14 +59,14 @@ class LoginAuth:
                     "id_club_atleta_cookie", #GUARDA EL ID DEL CLUB QUE PERTNECE EL ATLETA
                     str(id_club_atleta),
                     httponly=True,
-                    secure=True, 
+                    secure=False, 
                     samesite="None"
                 )
                 resp.set_cookie(
                 "id_atleta",
                 str(id_atleta),
                 httponly=True,
-                secure=True,
+                secure=False,
                 samesite="None"
                 )
             

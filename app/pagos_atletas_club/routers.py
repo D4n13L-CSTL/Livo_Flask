@@ -6,8 +6,11 @@ from flask_jwt_extended import jwt_required
 
 @api.route('/reportar_pago')
 class  GestionPago(Resource):
+    @api.expect(pago_input)
+    @api.marshal_with(pago_response, code=200, description="Pago reportado correctamente")
     @jwt_required()
     def post(self):
+        """Reportar un pago desde el atleta"""
         data = api.payload
         id_club = data.get('id_club')
         monto = data.get('monto')
@@ -22,8 +25,10 @@ class  GestionPago(Resource):
 
 @api.route('/ver_pagos')
 class VisualizacionDePago(Resource):
+    @api.marshal_with(pago_list_response, code=200, description="Lista de pagos pendientes")
     @jwt_required()
     def get(self):
+        """ Ver pagos pendientes """
         pagos_pendientes  = visualizacion_de_pagos_services.pagos_pendientes()
         return make_response(jsonify(pagos_pendientes))
         
@@ -31,8 +36,11 @@ class VisualizacionDePago(Resource):
     
 @api.route('/update_status')
 class CambioDeStatusRoutes(Resource):
+    @api.expect(pago_update_input)
+    @api.marshal_with(pago_response, code=200, description="Estado del pago actualizado correctamente")
     @jwt_required()
     def put(self):
+        """Cambiar estado del pago reportado"""
         data = api.payload
         estado  = data.get('estado')
         id_de_pago = data.get('id_de_pago')

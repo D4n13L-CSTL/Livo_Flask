@@ -44,7 +44,7 @@ class Auth(Resource):
             direccion = data.get("direccion")
             telefono = data.get("telefono")
             email = data.get("email")
-            username = data.get("username")
+            username = data.get("username").upper()
             password = data.get("password")
 
             # 3. Crear usuario y atleta

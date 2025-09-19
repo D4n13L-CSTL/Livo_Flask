@@ -8,7 +8,7 @@ from flask_jwt_extended import decode_token, jwt_required
 
 
 
-@api.route('/v1/api')
+@api.route('/register')
 class ClubRest(Resource):
     @api.expect(payload_club, validate=True)
     @api.response(200, 'Club registrado correctamente', respuesta_success)
@@ -23,7 +23,7 @@ class ClubRest(Resource):
             administrador = data["nombre_administrador"]
             email = data["email_club"]
             telefono = data["telefono_club"]
-            username = data['username']
+            username = data['username'].upper()
             password = data['password']
 
             club_register = gestion_club.register_club_id(nombre, administrador, email, telefono)
@@ -45,12 +45,12 @@ class ClubRest(Resource):
             return {"Error": str(e)}, 500
     
 
-@api.route('/v1/api/formulario')
+@api.route('/formulario')
 class FormularioClub(Resource):
     @api.expect(payload_formulario)
     @api.response(200, 'Formulario creado correctamente', respuesta_formulario_success)
     @api.response(500, 'Error interno', respuesta_formulario_error)
-    @jwt_required
+    @jwt_required()
     def post(self):
         """Crea un formulario de inscripción para un club.
 
@@ -69,7 +69,7 @@ class FormularioClub(Resource):
             return {"Error":str(e)} , 500
 
 
-@api.route('/v1/api/formulario/obtener')
+@api.route('/formulario/obtener')
 class VerFormularioClub(Resource):
     @api.response(200, 'Formulario del club', payload_formulario)
     @api.response(500, 'Error interno', respuesta_formulario_error)
@@ -83,12 +83,12 @@ class VerFormularioClub(Resource):
         
 
 
-@api.route('/v1/api/formulario/<int:id_formulario>/invitacion')
+@api.route('/formulario/<int:id_formulario>/invitacion')
 class GenerarLinkInscripcion(Resource):
     @api.doc('generar_link_inscripcion')
     @api.response(200, 'Link generado exitosamente', link_response_model)
     @api.response(500, 'Error al generar el link', error_response_model)
-    @jwt_required
+    @jwt_required()
     def post(self,id_formulario):
         """
         Genera un link de inscripción para un formulario específico.  
@@ -104,14 +104,14 @@ class GenerarLinkInscripcion(Resource):
         
 
 
-@api.route('/v1/api/registro_atleta')
+@api.route('/registro_atleta')
 class obtener_formulario(Resource):
     @api.doc('obtener_formulario')
     @api.param('token', 'Token de seguridad JWT', required=True)
     @api.response(200, 'Formulario obtenido exitosamente', formulario_response_model)
     @api.response(400, 'Token inválido o error de validación', error_response_model)
     @api.response(404, 'Formulario no encontrado', error_response_model)
-    @jwt_required
+    @jwt_required()
     def get(self):
         """
         Obtiene un formulario de inscripción a partir de un token JWT.
@@ -139,17 +139,18 @@ class obtener_formulario(Resource):
         
 
 
-@api.route('/v1/api/atletas')
-class ObtenerAtletas(Resource):
-    @api.doc('get_atletas')
-    @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
-    @api.response(500, 'Error interno del servidor')
-    @jwt_required
-    def get(self):
-        """
-        Retorna la lista de atletas registrados
-        """
-        try:
-            return {"atletas": atletas_logic.obtener_lista_atletas()}, 200
-        except Exception as e:
-            return {"Error": str(e)}, 500
+    @api.route('/atletas')
+    class ObtenerAtletas(Resource):
+        @api.doc('get_atletas')
+        @api.response(200, 'Lista obtenida correctamente', atletas_response_model)
+        @api.response(500, 'Error interno del servidor')
+        @jwt_required()
+        def get(self):
+            """
+            Retorna la lista de atletas registrados
+            """
+            atleta = atletas_logic.obtener_lista_atletas()
+            try:
+                return {"atletas": atleta}, 200
+            except Exception as e:
+                return {"Error": str(e)}, 500

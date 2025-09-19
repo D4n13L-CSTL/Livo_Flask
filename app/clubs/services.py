@@ -54,8 +54,8 @@ class InvitacionService:
             expires_delta=timedelta(days=7)
         )
 
-        # Retornar link
-        return f"http://192.168.2.112:5041/club/v1/api/registro_atleta?token={token}"
+        #Retornar link
+        return f"https://livo-flask.onrender.com/club/v1/api/registro_atleta?token={token}"
     
 
 class LogicAtletas(ClubBase):
@@ -63,6 +63,8 @@ class LogicAtletas(ClubBase):
         super().__init__(clubs)
         
     def obtener_lista_atletas(self):
-        id_club = request.cookies.get("id_club_cookie")
-        print(id_club)
-        return self.club.lista_atletas(id_club)
+        try:
+            id_club = request.cookies.get("id_club_cookie")
+            return self.club.lista_atletas(id_club)
+        except Exception as e:
+            return {'Error': str(e)},  500

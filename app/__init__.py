@@ -19,7 +19,8 @@ api = Api(
     doc='/docs',
     title='Livo Flask',
     version='1.0',
-    description='API para Livo Sport'
+    description='API para Livo Sport',
+    prefix='/api/v1'
               )
     
 jwt = JWTManager()
@@ -49,6 +50,7 @@ def create_app():
     app.config["JWT_COOKIE_SECURE"] = settings.JWT_COOKIE_SECURE
     app.config["JWT_COOKIE_HTTPONLY"] = settings.JWT_COOKIE_HTTPONLY
     app.config["JWT_COOKIE_SAMESITE"] =  settings.JWT_COOKIE_SAMESITE
+    app.config["JWT_COOKIE_CSRF_PROTECT"] =  settings.JWT_COOKIE_CSRF_PROTECT
 
     jwt.init_app(app)
     api.init_app(app)

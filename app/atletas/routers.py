@@ -8,7 +8,7 @@ from ..auth import auth_user
 
 
 
-@api.route('/v1/api')
+@api.route('/register')
 class Auth(Resource):
     @api.doc('registrar_atleta')
     @api.param('token', 'Token de invitación JWT', required=True)
@@ -44,11 +44,11 @@ class Auth(Resource):
             direccion = data.get("direccion")
             telefono = data.get("telefono")
             email = data.get("email")
-            username = data.get("username")
+            username = data.get("username").upper()
             password = data.get("password")
 
             # 3. Crear usuario y atleta
-            id_tipo_de_user = 4
+            id_tipo_de_user = 2
             users_atleta = auth_user.user_create(username, email, password, id_tipo_de_user)
 
             if not users_atleta:
@@ -75,11 +75,11 @@ class Auth(Resource):
             return {"error": str(e)}, 500
         
 
-@api.route('/eventos/api/v1')
+@api.route('/eventos')
 class Eventos(Resource):
     @api.doc('get_eventos_asignados')
     @api.marshal_list_with(evento_model)  # Indica que devuelve una lista de eventos
-    @jwt_required
+    @jwt_required()
     def get(self):
         """
         Retorna la lista de eventos asignados a un club

@@ -4,9 +4,9 @@ from . import auth_user
 
 
 
-api = Namespace('Gestion de Usuario', description='Gestion de Usuario', path='/auth')
+api = Namespace('Gestion de Usuario', description='Gestion de Usuario', path='/gestion_user')
 
-@api.route('/v1/api')
+@api.route('')
 class Auth(Resource):
     def post(self):
         try:        

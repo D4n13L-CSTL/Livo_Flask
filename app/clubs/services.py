@@ -54,7 +54,7 @@ class InvitacionService:
         )
 
         # Retornar link
-        return f"https://livosport.loca.lt/club/v1/api/registro_atleta?token={token}"
+        return f"http://192.168.2.112:5041/club/v1/api/registro_atleta?token={token}"
     
 
 class LogicAtletas(ClubBase):

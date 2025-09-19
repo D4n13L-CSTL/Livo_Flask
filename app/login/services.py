@@ -11,7 +11,6 @@ class LoginAuth:
         user = self.login_user_dao.login_user(username)
         if not user:
             return {"Auth": "Usuario No encontrado"}, 404
-        print(user)
         stored_password = user[0]['password'].encode('utf-8')
         id_club = user[0]['id_club']
         id_club_atleta = user[0]['id_club_perteniciente']

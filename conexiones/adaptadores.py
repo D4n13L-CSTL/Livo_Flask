@@ -11,7 +11,7 @@ PASSWORD = os.getenv("password_supabase")
 HOST = os.getenv("host_supabase")
 PORT = os.getenv("port_supabase")
 DBNAME = os.getenv("dbname_supabase")
-
+""" 
 def conexion_db():
     connection = psycopg2.connect(
             user=os.getenv("user"),
@@ -33,5 +33,5 @@ def conexion_db():
     return connection
 
 
-""" 
+
 #////////////////////////////////////

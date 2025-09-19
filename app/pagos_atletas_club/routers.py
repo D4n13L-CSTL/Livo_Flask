@@ -4,7 +4,7 @@ from . import realizar_pago, visualizacion_de_pagos_services, cambio_de_estatus_
 from flask import make_response, jsonify
 from flask_jwt_extended import jwt_required
 
-@api.route('/api/v1')
+@api.route('/reportar_pago')
 class  GestionPago(Resource):
     @jwt_required()
     def post(self):
@@ -20,7 +20,7 @@ class  GestionPago(Resource):
         return {"Sucess":"Pago Reportado"}
 
 
-@api.route('/api/v1/ver_pagos')
+@api.route('/ver_pagos')
 class VisualizacionDePago(Resource):
     @jwt_required()
     def get(self):
@@ -29,7 +29,7 @@ class VisualizacionDePago(Resource):
         
     
     
-@api.route('/api/v1/update_status')
+@api.route('/update_status')
 class CambioDeStatusRoutes(Resource):
     @jwt_required()
     def put(self):

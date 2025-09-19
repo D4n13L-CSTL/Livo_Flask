@@ -2,7 +2,7 @@ from .documentation import *
 from flask_restx import Resource
 
 
-@api.route('/prueba')
+@api.route('')
 class AsistenciasClass(Resource):
     
     def get(self):

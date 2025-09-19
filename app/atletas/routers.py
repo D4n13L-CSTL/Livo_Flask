@@ -8,7 +8,7 @@ from ..auth import auth_user
 
 
 
-@api.route('/v1/api')
+@api.route('/register')
 class Auth(Resource):
     @api.doc('registrar_atleta')
     @api.param('token', 'Token de invitación JWT', required=True)
@@ -75,7 +75,7 @@ class Auth(Resource):
             return {"error": str(e)}, 500
         
 
-@api.route('/eventos/api/v1')
+@api.route('/eventos')
 class Eventos(Resource):
     @api.doc('get_eventos_asignados')
     @api.marshal_list_with(evento_model)  # Indica que devuelve una lista de eventos

@@ -8,7 +8,7 @@ from flask_jwt_extended import decode_token, jwt_required
 
 
 
-@api.route('/v1/api')
+@api.route('/register')
 class ClubRest(Resource):
     @api.expect(payload_club, validate=True)
     @api.response(200, 'Club registrado correctamente', respuesta_success)
@@ -45,7 +45,7 @@ class ClubRest(Resource):
             return {"Error": str(e)}, 500
     
 
-@api.route('/v1/api/formulario')
+@api.route('/formulario')
 class FormularioClub(Resource):
     @api.expect(payload_formulario)
     @api.response(200, 'Formulario creado correctamente', respuesta_formulario_success)
@@ -69,7 +69,7 @@ class FormularioClub(Resource):
             return {"Error":str(e)} , 500
 
 
-@api.route('/v1/api/formulario/obtener')
+@api.route('/formulario/obtener')
 class VerFormularioClub(Resource):
     @api.response(200, 'Formulario del club', payload_formulario)
     @api.response(500, 'Error interno', respuesta_formulario_error)
@@ -83,7 +83,7 @@ class VerFormularioClub(Resource):
         
 
 
-@api.route('/v1/api/formulario/<int:id_formulario>/invitacion')
+@api.route('/formulario/<int:id_formulario>/invitacion')
 class GenerarLinkInscripcion(Resource):
     @api.doc('generar_link_inscripcion')
     @api.response(200, 'Link generado exitosamente', link_response_model)
@@ -104,7 +104,7 @@ class GenerarLinkInscripcion(Resource):
         
 
 
-@api.route('/v1/api/registro_atleta')
+@api.route('/registro_atleta')
 class obtener_formulario(Resource):
     @api.doc('obtener_formulario')
     @api.param('token', 'Token de seguridad JWT', required=True)
@@ -139,7 +139,7 @@ class obtener_formulario(Resource):
         
 
 
-    @api.route('/v1/api/atletas')
+    @api.route('/atletas')
     class ObtenerAtletas(Resource):
         @api.doc('get_atletas')
         @api.response(200, 'Lista obtenida correctamente', atletas_response_model)

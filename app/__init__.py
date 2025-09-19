@@ -19,7 +19,8 @@ api = Api(
     doc='/docs',
     title='Livo Flask',
     version='1.0',
-    description='API para Livo Sport'
+    description='API para Livo Sport',
+    prefix='/api/v1'
               )
     
 jwt = JWTManager()

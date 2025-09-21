@@ -56,7 +56,7 @@ def create_app():
     api.init_app(app)
  
     
-        CORS(app, supports_credentials=True, origins=["localhost:5173", "localhost:3000", "172.0.0.1:5173" , "172.0.0.1:3000"])
+    CORS(app, supports_credentials=True, origins=["localhost:5173", "localhost:3000", "172.0.0.1:5173" , "172.0.0.1:3000"])
     
     api.add_namespace(api_auth)
     api.add_namespace(api_atleta)

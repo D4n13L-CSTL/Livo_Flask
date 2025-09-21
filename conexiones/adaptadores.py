@@ -23,10 +23,6 @@ def conexion_db():
 
 
 """
-<<<<<<< HEAD
-
-=======
->>>>>>> 5124b06e02c988f71adf3840f0f1e7bada6c089a
 def conexion_db():
     connection = psycopg2.connect(
             user=USER,
@@ -35,7 +31,7 @@ def conexion_db():
             port=PORT,
             dbname=DBNAME)
     return connection
-""" 
+
 
 
 #////////////////////////////////////

@@ -14,6 +14,7 @@ from app.login.routers import  api as api_login
 from app.gestion_eventos.routers import  api as api_gestion_eventos
 from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
 from app.asistencias.routers import api as api_asistencias
+from app.entrenador.routers import api as api_entrenadores
 
 api = Api(  
     doc='/docs',
@@ -65,6 +66,7 @@ def create_app():
     api.add_namespace(api_gestion_eventos)
     api.add_namespace(api_gestion_pago_atletas)
     api.add_namespace(api_asistencias)
+    api.add_namespace(api_entrenadores)
     
 
     return app

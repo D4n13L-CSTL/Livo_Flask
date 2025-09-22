@@ -3,7 +3,7 @@ from config import settings
 from flask_cors import CORS
 from flask_restx import Api
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended.exceptions import NoAuthorizationError
+from flask_jwt_extended.exceptions import NoAuthorizationError, CSRFError
 
 from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 
@@ -27,6 +27,9 @@ api = Api(
 jwt = JWTManager()
 
 
+@api.errorhandler(CSRFError)
+def handle_CSRFError(e):
+    return {"Error": str(e)} , 500
 
 @api.errorhandler(ExpiredSignatureError)
 def handle_expired_error(e):
@@ -57,7 +60,7 @@ def create_app():
     api.init_app(app)
  
     
-    CORS(app, supports_credentials=True, origins=["localhost:5173", "localhost:3000", "172.0.0.1:5173" , "172.0.0.1:3000","http://127.0.0.1:5500","localhost:5500"])
+    CORS(app, supports_credentials=True, origins=["http://10.100.39.23:5041","http://localhost:5173", "http://localhost:3000", "http://172.0.0.1:5173" , "http://172.0.0.1:3000","http://127.0.0.1:5500","http://localhost:5500"])
     
     api.add_namespace(api_auth)
     api.add_namespace(api_atleta)

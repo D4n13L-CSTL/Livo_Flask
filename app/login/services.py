@@ -46,7 +46,7 @@ class LoginAuth:
             )
 
             
-            if tipo_de_user == 'ADMINISTRADOR':
+            if tipo_de_user == 'ADMINISTRADOR' or 'ENTRENADOR':
                 resp.set_cookie(
                     "id_club_cookie",
                     str(id_club),

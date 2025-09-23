@@ -24,14 +24,7 @@ class LoginAuth:
             resp = make_response(jsonify({"Success": True , "csrf_token": get_csrf_token(access_token)},), 200)
             #CAMBIAR EL SECURE A TRUE CUANDO HAYA REALIZADO EL MODULO
             set_access_cookies(resp, access_token)
-            resp.set_cookie(
-                "access_token_cookie",
-                access_token,
-                httponly=True,
-                secure=True,   # True en producción con HTTPS
-                samesite="None",
-                max_age=36000 
-            )
+           
             resp.set_cookie(
                 "tipo_de_user",
                 tipo_de_user,

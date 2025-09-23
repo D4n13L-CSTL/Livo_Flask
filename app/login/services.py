@@ -29,21 +29,21 @@ class LoginAuth:
                 access_token,
                 httponly=True,
                 secure=False,   # True en producción con HTTPS
-                samesite="None"
+                samesite="Lax"
             )
             resp.set_cookie(
                 "tipo_de_user",
                 tipo_de_user,
                 httponly=True,
                 secure=False, 
-                samesite="None"
+                samesite="Lax"
             )
             resp.set_cookie(
                 "id_usuario",
                 str(id_usuario),
                 httponly=True,
                 secure=False, 
-                samesite="None"
+                samesite="Lax"
             )
 
             
@@ -53,7 +53,7 @@ class LoginAuth:
                     str(id_club),
                     httponly=True,
                     secure=False,   # True en producción con HTTPS
-                    samesite="None"
+                    samesite="Lax"
                 )  
             elif tipo_de_user == 'ATLETA':
                 resp.set_cookie(
@@ -61,14 +61,14 @@ class LoginAuth:
                     str(id_club_atleta),
                     httponly=True,
                     secure=False, 
-                    samesite="None"
+                    samesite="Lax"
                 )
                 resp.set_cookie(
                 "id_atleta",
                 str(id_atleta),
                 httponly=True,
                 secure=False,
-                samesite="None"
+                samesite="Lax"
                 )
             
             return resp

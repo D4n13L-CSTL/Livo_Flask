@@ -16,6 +16,8 @@ from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
 from app.asistencias.routers import api as api_asistencias
 from app.entrenador.routers import api as api_entrenadores
 
+
+from datetime import timedelta
 api = Api(  
     doc='/docs',
     title='Livo Flask',
@@ -53,11 +55,14 @@ def create_app():
     app.config["JWT_COOKIE_SAMESITE"] =  settings.JWT_COOKIE_SAMESITE
     app.config["JWT_COOKIE_CSRF_PROTECT"] =  settings.JWT_COOKIE_CSRF_PROTECT
 
+    app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=10)
+    app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
+
     jwt.init_app(app)
     api.init_app(app)
  
     
-    CORS(app, supports_credentials=True, origins=["localhost:5173", "localhost:3000", "172.0.0.1:5173" , "172.0.0.1:3000","http://127.0.0.1:5500","localhost:5500"])
+    CORS(app, supports_credentials=True, origins=["http://localhost:5173", "http://localhost:3000", "http://172.0.0.1:5173" , "http://172.0.0.1:3000","http://127.0.0.1:5500","http://localhost:5500","https://bright-clocks-raise.loca.lt"])
     
     api.add_namespace(api_auth)
     api.add_namespace(api_atleta)

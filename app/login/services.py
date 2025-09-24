@@ -23,13 +23,7 @@ class LoginAuth:
             resp = make_response(jsonify({"Success": True , "csrf_token": get_csrf_token(access_token)},), 200)
             #CAMBIAR EL SECURE A TRUE CUANDO HAYA REALIZADO EL MODULO
             set_access_cookies(resp, access_token)
-            resp.set_cookie(
-                "access_token_cookie",
-                access_token,
-                httponly=True,
-                secure=False,   # True en producción con HTTPS
-                samesite="None"
-            )
+
             resp.set_cookie(
                 "tipo_de_user",
                 tipo_de_user,
@@ -42,7 +36,8 @@ class LoginAuth:
                 str(id_usuario),
                 httponly=True,
                 secure=False, 
-                samesite="None"
+                samesite="None",
+                domain="bright-clocks-raise.loca.lt"
             )
 
             
@@ -60,7 +55,8 @@ class LoginAuth:
                     str(id_club_atleta),
                     httponly=True,
                     secure=False, 
-                    samesite="None"
+                    samesite="None",
+                    max_age=36000 
                 )
                 resp.set_cookie(
                 "id_atleta",

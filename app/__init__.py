@@ -15,7 +15,7 @@ from app.gestion_eventos.routers import  api as api_gestion_eventos
 from app.pagos_atletas_club.routers import  api as api_gestion_pago_atletas
 from app.asistencias.routers import api as api_asistencias
 from app.entrenador.routers import api as api_entrenadores
-
+from app.membresias.routers import api as api_membersh
 from datetime import timedelta
 api = Api(  
     doc='/docs',
@@ -74,6 +74,7 @@ def create_app():
     api.add_namespace(api_gestion_pago_atletas)
     api.add_namespace(api_asistencias)
     api.add_namespace(api_entrenadores)
+    api.add_namespace(api_membersh)
     
 
     return app

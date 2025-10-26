@@ -8,4 +8,6 @@ def probar_conexion():
     else:
         print("❌ No se pudo conectar a la base de datos.")
 
+
 probar_conexion()
+

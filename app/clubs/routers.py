@@ -1,7 +1,7 @@
 from flask import Blueprint, make_response, jsonify, request
 from flask_restx import Resource
 from .documentation import * 
-from . import gestion_club, formularios_registrados, link_generate_inscripcion, atletas_logic
+from . import gestion_club, formularios_registrados, link_generate_inscripcion, atletas_logic, registrar_entrenador
 from ..auth import auth_user
 from flask_jwt_extended import decode_token, jwt_required
 
@@ -154,3 +154,19 @@ class obtener_formulario(Resource):
                 return {"atletas": atleta}, 200
             except Exception as e:
                 return {"Error": str(e)}, 500
+            
+
+
+@api.route('/create_entrenador')
+class CrearEntrenador(Resource):
+    def post(self):
+        try:
+            data = api.payload
+            username = data["username"].upper()
+            email = data["email"]
+            password  = data["password"]
+            tipo_de_user_id = data["tipo_de_user_id"]
+            registrar_entrenador.asignacion(username, email, password, tipo_de_user_id)
+            return {"Succes":True}
+        except Exception as e:
+            return {"Error":str(e)} , 500

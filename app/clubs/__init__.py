@@ -1,6 +1,6 @@
 from conexiones.cursores import get_cursor
 from .db import Clubes, VerFormularios, ListaAtletas
-from .services import Clubs, ObtenerFormulario, InvitacionService, LogicAtletas
+from .services import Clubs, ObtenerFormulario, InvitacionService, LogicAtletas, AsignarEntrenador
 
 
 club_auth = Clubes(get_cursor)
@@ -17,3 +17,6 @@ formularios_registrados = ObtenerFormulario(formularios_de_inscripciones)
 link_generate_inscripcion = InvitacionService(formularios_registrados)
 
 atletas_logic = LogicAtletas(obtener_lista_atletas)
+
+
+registrar_entrenador  = AsignarEntrenador()

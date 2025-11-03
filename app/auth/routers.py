@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restx import fields, Namespace, Resource
-from . import auth_user
+from . import auth_user 
 
 
 

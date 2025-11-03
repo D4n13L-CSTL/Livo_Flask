@@ -59,3 +59,6 @@ class ListaAtletas(BaseDAO):
 
         """
         return self.fetch_all(query, (id_club,))
+
+
+

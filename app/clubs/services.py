@@ -1,6 +1,9 @@
 from flask_jwt_extended import create_access_token
 from flask import request
 from datetime import timedelta
+from app.auth import auth_user
+
+
 
 class ClubBase:
     def __init__(self, clubs):
@@ -68,3 +71,10 @@ class LogicAtletas(ClubBase):
             return self.club.lista_atletas(id_club)
         except Exception as e:
             return {'Error': str(e)},  500
+        
+
+
+class AsignarEntrenador:
+    def asignacion(self,username, email, password, tipo_de_user_id):
+        
+        auth_user.user_create(username, email, password, tipo_de_user_id)

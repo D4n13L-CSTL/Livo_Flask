@@ -20,9 +20,9 @@ class LoginAuth:
 
         if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             access_token = create_access_token(identity=username)
-            resp = make_response(jsonify({"Success": True , "                                                                                                                                                                                                                                                                                                                       0888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888                     srf_token": get_csrf_token(access_token)},), 200)
+            resp = make_response(jsonify({"Success": True , "user":tipo_de_user,"csrf_token": get_csrf_token(access_token)},), 200)
             #CAMBIAR EL SECURE A TRUE CUANDO HAYA REALIZADO EL MODULO
-            set_access_cookies(resp, access_token,domain="bright-clocks-raise.loca.lt")
+            set_access_cookies(resp, access_token)
            
             resp.set_cookie(
                 "tipo_de_user",
@@ -30,8 +30,7 @@ class LoginAuth:
                 httponly=True,
                 secure=True, 
                 samesite="None",
-                max_age=36000 ,
-                domain="bright-clocks-raise.loca.lt"
+                max_age=36000
             )
             resp.set_cookie(
                 "id_usuario",
@@ -39,8 +38,7 @@ class LoginAuth:
                 httponly=True,
                 secure=True, 
                 samesite="None",
-                max_age=36000 ,
-                domain="bright-clocks-raise.loca.lt"
+                max_age=36000 
             )
 
             
@@ -51,8 +49,7 @@ class LoginAuth:
                     httponly=True,
                     secure=True,   # True en producción con HTTPS
                     samesite="None",
-                    max_age=36000 ,
-                domain="bright-clocks-raise.loca.lt"
+                    max_age=36000 
                 )  
             elif tipo_de_user == 'ATLETA':
                 resp.set_cookie(
@@ -61,8 +58,7 @@ class LoginAuth:
                     httponly=True,
                     secure=True, 
                     samesite="None",
-                    max_age=36000 ,
-                domain="bright-clocks-raise.loca.lt"
+                    max_age=36000 
                 )
                 resp.set_cookie(
                 "id_atleta",
@@ -70,8 +66,7 @@ class LoginAuth:
                 httponly=True,
                 secure=True,
                 samesite="None",
-                max_age=36000 ,
-                domain="bright-clocks-raise.loca.lt"
+                max_age=36000 
                 )
             
             return resp
